@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/CHIEW-YE-KAI/BERR2243#readme",
   "dependencies": {
-    "mongodb": "^6.15.0"
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mongodb": "^6.15.0",
+    "ors": "^1.0.0"
   }
 }
