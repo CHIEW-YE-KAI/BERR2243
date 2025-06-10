@@ -1,0 +1,28 @@
+{
+  "name": "berr-2243",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000b\u0000e\u0000r\u0000r\u0000 \u0000 \u00002\u00002\u00004\u00003\u0000-\u00002\u00000\u00002\u00005\u0000\r\u0000 \u0000",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CHIEW-YE-KAI/BERR2243.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CHIEW-YE-KAI/BERR2243/issues"
+  },
+  "homepage": "https://github.com/CHIEW-YE-KAI/BERR2243#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "mongodb": "^6.15.0",
+    "mongoose": "^8.15.1",
+    "ors": "^1.0.0"
+  }
+}
