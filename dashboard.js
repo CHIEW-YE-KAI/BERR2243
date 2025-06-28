@@ -1,9 +1,4 @@
-// dashboard.js
-
-// ───────────────────────────────────────────────────────────
-//  Constants & Helpers
-// ───────────────────────────────────────────────────────────
-const API   = ''; // relative to current origin
+const API = window.location.origin; 
 const token = () => localStorage.getItem('token');
 const auth  = () => ({ 'Authorization': `Bearer ${token()}` });
 
