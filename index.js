@@ -8,13 +8,13 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 app.use(express.json());
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 let db;
 
 // Connect to MongoDB
 async function connectToMongoDB() {
-  const uri = "mongodb://localhost:27017";
+  const uri = process.env.MONGO_URI;
   const client = new MongoClient(uri);
   try {
     await client.connect();
