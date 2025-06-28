@@ -1,3 +1,4 @@
+const path = require('path');
 const cors = require('cors');
 const express = require('express');
 const { MongoClient, ObjectId } = require('mongodb');
@@ -9,6 +10,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 const port = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'dashboard.html'));
+});
 
 let db;
 
@@ -578,10 +583,6 @@ app.get('/orders', checkDB, authenticate, async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch orders' });
   }
-});
-
-app.get('/', (req, res) => {
-  res.send('✅ FreeRider backend is running!');
 });
 
 app.listen(port, () => console.log(`🚀 Server running on http://localhost:${port}`));
