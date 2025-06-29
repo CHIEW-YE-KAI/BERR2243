@@ -11,7 +11,14 @@ app.use(cors());
 app.use(express.json());
 const port = process.env.PORT || 3000;
 
-app.use(express.static(path.join(__dirname)));
+// Serve static files with security
+app.use(express.static(__dirname, {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js') && !path.includes('dashboard')) {
+      res.set('Content-Type', 'text/plain');
+    }
+  }
+}));
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'dashboard.html'));

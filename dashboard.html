@@ -841,6 +841,7 @@
 
   <!-- JavaScript -->
   <script>
+    const API = window.location.origin;
     let usernameGlobal = '';
     let currentDriverId = '';
     let currentDriverStatus = 'available';
@@ -890,7 +891,7 @@
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
       try {
-        const res = await fetch('http://localhost:3000/auth/login', {
+        const res = await fetch('${API}/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })
@@ -920,7 +921,7 @@ async function register() {
 
   try {
     // Register the user first
-    const res = await fetch('http://localhost:3000/users', {
+    const res = await fetch('${API}/users', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
@@ -936,7 +937,7 @@ async function register() {
     if (!res.ok) throw new Error(data.error);
 
     // Login the user to get token
-    const loginRes = await fetch('http://localhost:3000/auth/login', {
+    const loginRes = await fetch('/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })
@@ -956,7 +957,7 @@ async function register() {
       const carModel = document.getElementById('registerCarModel').value;
       if (!carModel) return alert('Car model is required for drivers');
       
-      const driverRes = await fetch('http://localhost:3000/drivers', {
+      const driverRes = await fetch('/drivers', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
@@ -1021,7 +1022,7 @@ async function loadProfile() {
     if (!token) throw new Error('Not authenticated');
 
     // Load user data
-    const userRes = await fetch(`http://localhost:3000/users/${userId}`, {
+    const userRes = await fetch(`/users/${userId}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     if (!userRes.ok) throw new Error('Failed to load profile');
@@ -1049,7 +1050,7 @@ async function loadProfile() {
     } 
     else if (role === 'driver') {
       // Load driver data by user ID
-      const driverRes = await fetch(`http://localhost:3000/drivers?userId=${userId}`, {
+      const driverRes = await fetch(`/drivers?userId=${userId}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const drivers = await driverRes.json();
@@ -1102,7 +1103,7 @@ async function toggleDriverStatus() {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Not authenticated');
     
-    const res = await fetch(`http://localhost:3000/drivers/${currentDriverId}`, {
+    const res = await fetch(`/drivers/${currentDriverId}`, {
       method: 'PATCH',
       headers: { 
         'Content-Type': 'application/json',
@@ -1144,7 +1145,7 @@ async function toggleDriverStatus() {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Not authenticated');
     
-    const res = await fetch(`http://localhost:3000/users/${userId}`, {
+    const res = await fetch(`/users/${userId}`, {
       method: 'PATCH',
       headers: { 
         'Content-Type': 'application/json',
@@ -1201,7 +1202,7 @@ async function toggleDriverStatus() {
     
     if (password) userUpdates.password = password;
     
-    const userRes = await fetch(`http://localhost:3000/users/${userId}`, {
+    const userRes = await fetch(`/users/${userId}`, {
       method: 'PATCH',
       headers: { 
         'Content-Type': 'application/json',
@@ -1218,7 +1219,7 @@ async function toggleDriverStatus() {
 
     // Then update driver info
     if (currentDriverId) {
-      const driverRes = await fetch(`http://localhost:3000/drivers/${currentDriverId}`, {
+      const driverRes = await fetch(`/drivers/${currentDriverId}`, {
         method: 'PATCH',
         headers: { 
           'Content-Type': 'application/json',
@@ -1261,7 +1262,7 @@ async function loadDrivers() {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Not authenticated');
     
-    const res = await fetch('http://localhost:3000/drivers/available', {
+    const res = await fetch('/drivers/available', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -1312,7 +1313,7 @@ document.getElementById('orderForm')?.addEventListener('submit', async (e) => {
   const carModel = selectedOption.getAttribute('data-carModel');
 
   try {
-    const res = await fetch('http://localhost:3000/orders', {
+    const res = await fetch('/orders', {
       method: 'POST',
       headers: { 
         'Content-Type': 'application/json',
@@ -1345,13 +1346,13 @@ document.getElementById('orderForm')?.addEventListener('submit', async (e) => {
     if (!token) throw new Error('Not authenticated');
     
     // First get the driver ID
-    const userRes = await fetch(`http://localhost:3000/users/${userId}`, {
+    const userRes = await fetch(`/users/${userId}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     const user = await userRes.json();
     
     // Then get driver profile to get the driver ID
-    const driversRes = await fetch('http://localhost:3000/drivers', {
+    const driversRes = await fetch('/drivers', {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     const drivers = await driversRes.json();
@@ -1362,7 +1363,7 @@ document.getElementById('orderForm')?.addEventListener('submit', async (e) => {
     }
     
     // Now fetch orders for this driver
-    const ordersRes = await fetch(`http://localhost:3000/orders/driver/${driver._id}`, {
+    const ordersRes = await fetch(`/orders/driver/${driver._id}`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
     
@@ -1427,7 +1428,7 @@ document.getElementById('orderForm')?.addEventListener('submit', async (e) => {
     async function updateOrderStatus(orderId) {
       const selectedStatus = document.getElementById(`status-${orderId}`).value;
       try {
-        const res = await fetch(`http://localhost:3000/orders/${orderId}`, {
+        const res = await fetch(`/orders/${orderId}`, {
           method: 'PATCH',
           headers: {'Content-Type':'application/json'},
           body: JSON.stringify({ status: selectedStatus })
@@ -1443,7 +1444,7 @@ document.getElementById('orderForm')?.addEventListener('submit', async (e) => {
 
     async function loadDriverEarnings() {
       try {
-        const response = await fetch(`http://localhost:3000/drivers/${userId}/earnings`);
+        const response = await fetch(`/drivers/${userId}/earnings`);
         if (!response.ok) {
           throw new Error('Failed to fetch earnings');
         }
@@ -1458,7 +1459,7 @@ document.getElementById('orderForm')?.addEventListener('submit', async (e) => {
       const id = document.getElementById('blockUserId').value;
       if (!id) return alert('Enter a User ID!');
 
-      const res = await fetch(`http://localhost:3000/admin/users/${id}`, {
+      const res = await fetch(`/admin/users/${id}`, {
         method: 'DELETE'
       });
 
@@ -1476,7 +1477,7 @@ document.getElementById('orderForm')?.addEventListener('submit', async (e) => {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Not authenticated');
     
-    const res = await fetch('http://localhost:3000/users', {
+    const res = await fetch('/users', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -1525,7 +1526,7 @@ async function viewAllOrders() {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Not authenticated');
     
-    const res = await fetch('http://localhost:3000/orders', {
+    const res = await fetch('/orders', {
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -1594,7 +1595,7 @@ function getStatusClass(status) {
 
 async function loadPassengerAnalytics() {
   try {
-    const response = await fetch('http://localhost:3000/analytics/passengers', {
+    const response = await fetch('/analytics/passengers', {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
@@ -1668,7 +1669,7 @@ async function confirmDeleteAccount() {
     const token = localStorage.getItem('token');
     if (!token) throw new Error('Not authenticated');
 
-    const res = await fetch(`http://localhost:3000/users/${userId}`, {
+    const res = await fetch(`/users/${userId}`, {
       method: 'DELETE',
       headers: {
         'Authorization': `Bearer ${token}`
